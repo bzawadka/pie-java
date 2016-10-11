@@ -24,7 +24,26 @@ public class CombinationsOfString {
         }
     }
 
+    public void combineNoIf() {
+        combineNoIf(0);
+    }
+
+    private void combineNoIf(int start) {
+        for (int i = start; i < input.length() - 1; i++) {
+            out.append(input.charAt(i));
+            System.out.println(out);
+            combineNoIf(i + 1);
+            out.setLength(out.length() - 1);
+        }
+
+        out.append(input.charAt(input.length() - 1));
+        System.out.println(out);
+        out.setLength(out.length() - 1);
+    }
+
     public static void main(String[] args) {
         new CombinationsOfString("wxyz").combine();
+        System.out.println("---------------------------");
+        new CombinationsOfString("wxyz").combineNoIf();
     }
 }
