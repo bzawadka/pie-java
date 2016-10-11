@@ -1,24 +1,24 @@
-package pl.bzawadka.pie.linkedlist;
+package pl.bzawadka.pie.recursion;
 
 public class PermutationsOfString {
     private boolean[] used;
     private StringBuilder out = new StringBuilder();
-    private final String in;
+    private final String input;
 
-    public PermutationsOfString(String str) {
-        in = str;
-        used = new boolean[str.length()];
+    public PermutationsOfString(String input) {
+        this.input = input;
+        used = new boolean[input.length()];
     }
 
     public void permute() {
-        if (in.length() == out.length()) {
+        if (input.length() == out.length()) {
             System.out.println(out);
             return;
         }
-        for (int i = 0; i < in.length(); i++) {
+        for (int i = 0; i < input.length(); i++) {
             if (used[i])
                 continue;
-            out.append(in.charAt(i));
+            out.append(input.charAt(i));
             used[i] = true;
             permute();
             used[i] = false;
