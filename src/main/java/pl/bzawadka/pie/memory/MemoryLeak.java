@@ -2,12 +2,14 @@ package pl.bzawadka.pie.memory;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MemoryLeak {
     public static void main(String[] args) {
-        TaskList taskList = new TaskList();
-        final TaskCreator taskCreator = new TaskCreator(taskList);
-        new Thread(() -> {
+        TaskCreator taskCreator = new TaskCreator();
+        ExecutorService executor = Executors.newCachedThreadPool();
+        executor.execute(() -> {
             for (int i = 0; i < 100000; i++) {
                 taskCreator.createTask();
                 try {
@@ -16,14 +18,14 @@ public class MemoryLeak {
                     e.printStackTrace();
                 }
             }
-        }).start();
+        });
     }
 
     private static class TaskCreator {
         private TaskList taskList;
 
-        public TaskCreator(TaskList taskList) {
-            this.taskList = taskList;
+        public TaskCreator() {
+            this.taskList = new TaskList();
         }
 
         public void createTask() {
