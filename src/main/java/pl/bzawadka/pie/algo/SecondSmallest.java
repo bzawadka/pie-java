@@ -23,7 +23,6 @@ public class SecondSmallest {
                 secondSmallest = smallest;
                 smallest = currentElement;
 
-                /* If currentElement element is in between the smallest and second then update second */
             } else if (currentElement < secondSmallest && currentElement != smallest) {
                 secondSmallest = currentElement;
             }
