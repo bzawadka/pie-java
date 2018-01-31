@@ -88,7 +88,7 @@ public class HashMap {
                 entries[bucketIndex] = new Entry(key, value);
             } else {
                 Entry entry = firstEntry;
-                while (entry.hasNext()) {
+                while (entry.hasNext()) { // advance until end of the list
                     entry = entry.next();
                 }
                 entry.setNext(new Entry(key, value));
