@@ -51,7 +51,7 @@ public class MovieFrameRenderer {
             // wait for completion of rendering; Futures collection maintain original order of ModelFrames
             dest.add(future.get());
         }
-
+        executorService.shutdown();
         return dest;
     }
 }
