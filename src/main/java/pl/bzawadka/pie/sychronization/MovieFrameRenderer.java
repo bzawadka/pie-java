@@ -23,6 +23,7 @@ public class MovieFrameRenderer {
     }
 
     interface RenderEngine {
+        /** time/resources expensive operation */
         MovieFrame render(ModelFrame modelFrame);
     }
 
