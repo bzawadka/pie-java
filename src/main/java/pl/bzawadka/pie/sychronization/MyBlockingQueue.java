@@ -25,33 +25,33 @@ public class MyBlockingQueue {
 
         new Thread(() -> {
             try {
-                reportTaken(queue.take());
-                reportTaken(queue.take());
-                reportTaken(queue.take());
-                reportTaken(queue.take());
-                reportTaken(queue.take());
-                reportTaken(queue.take());
+                logTaken(queue.take());
+                logTaken(queue.take());
+                logTaken(queue.take());
+                logTaken(queue.take());
+                logTaken(queue.take());
+                logTaken(queue.take());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }).start();
 
         new Thread(() -> {
-            queue.add(reportAdded("ala"));
-            queue.add(reportAdded("ma"));
-            queue.add(reportAdded("kota"));
-            queue.add(reportAdded("a kot"));
-            queue.add(reportAdded("ma"));
-            queue.add(reportAdded("ale"));
+            queue.add(logAdded("ala"));
+            queue.add(logAdded("ma"));
+            queue.add(logAdded("kota"));
+            queue.add(logAdded("a kot"));
+            queue.add(logAdded("ma"));
+            queue.add(logAdded("ale"));
         }).start();
     }
 
-    private static Object reportAdded(String item) {
+    private static Object logAdded(String item) {
         System.out.println("added: " + item);
         return item;
     }
 
-    private static void reportTaken(Object item) {
+    private static void logTaken(Object item) {
         System.out.println("taken: " + item);
     }
 }

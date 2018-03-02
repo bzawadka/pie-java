@@ -2,32 +2,49 @@ package pl.bzawadka.pie.sychronization;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-/** blocking queue with size limit, similar to http://tutorials.jenkov.com/java-concurrency/blocking-queues.html */
-public class MyBlockingQueueWithLimit {
+/** blocking queue with size limit and nice Lock with Conditions, similar to example from {@link java.util.concurrent.locks.Condition} */
+public class MyBlockingQueueWithLock {
     private Queue queue = new LinkedList<>();
     private int limit = 3;
 
-    public synchronized void put(Object item) throws InterruptedException {
-        while (queue.size() == limit) {
-            wait();
+    final Lock lock = new ReentrantLock();
+    final Condition notFull = lock.newCondition();
+    final Condition notEmpty = lock.newCondition();
+
+    public void put(Object item) throws InterruptedException {
+        lock.lock();
+        try {
+            while (queue.size() == limit) {
+                notFull.await();
+            }
+            queue.add(item);
+            notEmpty.signal();
+        } finally {
+            lock.unlock();
         }
-        queue.add(item);
-        notifyAll();
     }
 
-    public synchronized Object take() throws InterruptedException {
-        while (queue.size() == 0) {
-            wait();
+    public Object take() throws InterruptedException {
+        lock.lock();
+        try {
+            while (queue.isEmpty()) {
+                notEmpty.await();
+            }
+            Object item = queue.remove();
+            notFull.signal();
+            return item;
+        } finally {
+            lock.unlock();
         }
-        Object item = queue.remove();
-        notifyAll();
-        return item;
     }
 
     //------- let's call it a test: -----------
     public static void main(String[] args) throws InterruptedException {
-        MyBlockingQueueWithLimit queue = new MyBlockingQueueWithLimit();
+        MyBlockingQueueWithLock queue = new MyBlockingQueueWithLock();
 
         new Thread(() -> {
             try {
