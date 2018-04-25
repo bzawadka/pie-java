@@ -34,5 +34,8 @@ public class StringToIntTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Negative numbers are not supported");
 
+        assertThatThrownBy(() -> underTest.strToNumber("123ZZZ456"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("A letter cannot be converted into a digit");
     }
 }
