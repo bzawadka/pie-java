@@ -63,8 +63,7 @@ public class Average {
         }
     }
 
-    public double threadSaveAverage() {
-        lock.lock();
+    public double threadSafeAverage() {
         lock.lock();
         try {
             if (counter == 0) return 0;
